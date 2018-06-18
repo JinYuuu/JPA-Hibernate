@@ -29,7 +29,7 @@ public class JpaHibernateApplication implements CommandLineRunner {
 		//repository.save(new Course("Microservices in 100 steps"));
 		//repository.deleteById(10001L);
 		
-		repository.playWithEntityManager();
+		//repository.playWithEntityManager();
 		System.out.println("started. ^^");
 	}
 }
