@@ -1,7 +1,4 @@
-package com.jpa.hibernate.app.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+package com.jpa.hibernate.jpahibernate;
 
 import java.util.List;
 
@@ -14,12 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.jpa.hibernate.app.JpaHibernateApplication;
 import com.jpa.hibernate.app.entity.Course;
-import com.jpa.hibernate.app.repository.CourseRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes=JpaHibernateApplication.class)
@@ -33,27 +28,28 @@ public class JPQLTest {
 	
 	@Test
 	public void jpql_basic() {
-		List resultList = em.createQuery("Select c From Course c").getResultList();
+		List resultList = em.createNamedQuery("query_get_all_courses").getResultList();
 		logger.info("Select c From Course c -> {}", resultList);
 	}
 	
 	@Test
 	public void jpql_typed() {
 		TypedQuery<Course> query = 
-				em.createQuery("Select c From c", Course.class);
+				em.createNamedQuery("query_get_all_courses", Course.class);
 		
 		List<Course> resultList = query.getResultList();
 		
 		logger.info("Select c From Course c -> {}", resultList);
 	}
 	
+	
 	@Test
 	public void jpql_where() {
 		TypedQuery<Course> query = 
-				em.createQuery("Select c From Course where name like '%100 Steps'", Course.class);
+				em.createNamedQuery("query_get_100_Step_courses", Course.class);
 		
 		List<Course> resultList = query.getResultList();
 		
-		logger.info("Select c From Course where name like '%100 Steps' -> {}", resultList);
+		logger.info("Select c From Course c where name like '%100 Steps' -> {}", resultList);
 	}
 }

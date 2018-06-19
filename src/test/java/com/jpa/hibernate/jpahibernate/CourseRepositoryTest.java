@@ -1,4 +1,4 @@
-package com.jpa.hibernate.app.Test;
+package com.jpa.hibernate.jpahibernate;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
