@@ -48,13 +48,28 @@ public class CourseRepository {
 		em.remove(course);
 	}
 	
+	
 	public void playWithEntityManager() {
 		Course course1 = new Course("Web Services in 100 Steps.");
-		em.persist(course1); //let entity manager to treat this entity
-		// this change will be persisted to the database
-		course1.setName("Web Services in 100 Steps - updated");
+
+		//let entity manager to treat this entity
+		//persist : this change will be persisted to the database
+		em.persist(course1); 
+		//flush : the change what we've done until then, will be sent to database
+		Course course2 = new Course("Angular Js in 100 Steps.");
+		em.persist(course2);
+		em.flush();
 		
-		Course course2 = findById(10001L);
-		course2.setName("JPA in 50 Steps - Updated");
+		//detach : nolonger persisted
+		em.clear(); 
+		//em.detach(course2);
+		
+		course1.setName("Web Services in 100 Steps - updated");
+		course2.setName("Angular Js in 100 Steps - Updated");
+		
+		em.refresh(course1);
+		//all the changes that have done to course1 will be lost
+		
+		em.flush();
 	}
 }
