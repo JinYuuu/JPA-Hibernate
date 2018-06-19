@@ -49,10 +49,12 @@ public class CourseRepository {
 	}
 	
 	public void playWithEntityManager() {
-		Course course = new Course("Web Services in 100 Steps.");
-		em.persist(course); //let entity manager to treat this entity
+		Course course1 = new Course("Web Services in 100 Steps.");
+		em.persist(course1); //let entity manager to treat this entity
 		// this change will be persisted to the database
-		course.setName("Web Services in 100 Steps - updated");
+		course1.setName("Web Services in 100 Steps - updated");
 		
+		Course course2 = findById(10001L);
+		course2.setName("JPA in 50 Steps - Updated");
 	}
 }
