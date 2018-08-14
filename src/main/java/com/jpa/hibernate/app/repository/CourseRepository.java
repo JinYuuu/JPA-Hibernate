@@ -1,5 +1,7 @@
 package com.jpa.hibernate.app.repository;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jpa.hibernate.app.entity.Course;
+import com.jpa.hibernate.app.entity.Review;
 
 @Repository
 @Transactional
@@ -71,5 +74,38 @@ public class CourseRepository {
 		//all the changes that have done to course1 will be lost
 		
 		em.flush();
+	}
+
+	public void addHardcodedReviewsForCourse() {
+		// get the course 10003	
+		Course course = findById(10003L);
+		
+		// add 2 reviews to it
+		Review review1 = new Review("5", "the course is good");
+		Review review2 = new Review("5", "the course is superb");
+				
+		course.addReview(review1);
+		review1.setCourse(course);
+		
+		course.addReview(review2);
+		review2.setCourse(course);
+		
+		// save it to the database
+		em.persist(review1);
+		em.persist(review2);
+		
+	}
+	
+	public void addReviewsForCourse(Long courseId, List<Review> reviews) {
+		// get the course 10003	
+		Course course = findById(courseId);
+		
+		// add reviews to it
+		for (Review review : reviews) {
+			course.addReview(review);
+			review.setCourse(course);
+			em.persist(review);
+		}
+		
 	}
 }

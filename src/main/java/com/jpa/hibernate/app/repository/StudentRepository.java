@@ -2,10 +2,13 @@ package com.jpa.hibernate.app.repository;
 
 import javax.persistence.EntityManager;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jpa.hibernate.app.entity.Course;
 import com.jpa.hibernate.app.entity.Passport;
 import com.jpa.hibernate.app.entity.Student;
 
@@ -79,4 +82,53 @@ public class StudentRepository {
 		student.setName("Ranga - updated");
 		//Persistence Context (student++, passport++)
 	}
+	
+	public void insertHardcodedStydentAndCourse() {
+		Student student = new Student("Jack");
+		Course course = new Course("Microservices in 100 Steps");
+		em.persist(student);
+		em.persist(course);
+		
+		student.addCourse(course);
+		course.addStudent(student);		
+		em.persist(student);
+	}
+	
+	public void insertStudentAndCourse(Student student, Course course) {
+
+		em.persist(student);
+		em.persist(course);
+		
+		student.addCourse(course);
+		course.addStudent(student);	
+	}
+	
+	public void addNewCourseToStudent(Course course, Long studentId){
+		if(course == null || studentId == null) {
+			return;
+		}
+
+		try {
+			if(em.find(Student.class, studentId) == null) {
+				throw new Exception("student dosen't exist");
+			}
+			
+			Student myStudent = em.find(Student.class, studentId);
+			
+			//How to check if the course exist?
+			//if (em.find(Course.class, course.getId())!=null) {
+			//	Course existCourse = em.find(Course.class, course.getId());
+			//	myStudent.addCourse(existCourse);
+			//} else {
+				em.persist(course);
+				myStudent.addCourse(course);
+			//}
+			
+		}catch(Exception ex) {
+			Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
+			logger.info("ex -> {}", ex);
+		}
+	}
+	
+	//public void addStudentToCourse()
 }
